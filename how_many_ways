@@ -1,0 +1,44 @@
+"""
+字符A-Z可以编码为1-26。"A"->"1", "Z"->"26"
+现在输入一个数字序列，计算有多少种方式可以解码成字符A-Z组成的序列。
+
+例如：
+
+输入：19
+输出：2
+
+输入：268
+输出：2
+
+输入：219
+输出：3
+
+"""
+
+
+def how_many_ways(digitarray):
+    # 去掉左边是0的数字
+    digitarray = digitarray.lstrip('0')
+    length = len(digitarray)
+    if length == 0:
+        return 0
+    li = list(range(length+1))
+    li[0] = 1
+    for i in range(length+1):
+        if i == 0:
+            continue
+        if digitarray[i-1] == '0':
+            li[i] = 1
+        else:
+            li[i] = li[i-1]
+        # 判断当前字符是否和前一个字符组成编码序列
+        if (i > 1 and int(digitarray[i-1]) <= 6 and int(digitarray[i-2]) == 2) or \
+                (i > 1 and int(digitarray[i-2]) == 1):
+            li[i] += li[i-2]
+    print(li)
+    return li[length]
+
+
+if __name__ == "__main__":
+    result = how_many_ways("209")
+    print(result)
